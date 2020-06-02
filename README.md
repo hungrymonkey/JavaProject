@@ -3,6 +3,15 @@ Time Keep Co. Location Score Calculator
 
 NITW Project Data Engine Read.Me
 
+
+## Project Structure
+
+* frontend/ 
+* backend/
+* Docker.md - How to use Docker
+* CONTIBUTING.md - How to contribute 
+
+
 1. Summary of the Project
 
 The project involves building and expanding upon the data engine to create an 
