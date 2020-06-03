@@ -1,0 +1,15 @@
+
+def linear_weights(length, effect_directions):
+    normalization_factor = 2/(length*(length+1)) 
+    weights = normalization_factor * pd.Series(range(length, 0, -1))
+    return weights.mul(effect_directions)
+
+
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaled_features = scaler.fit_transform(features)
+effect_directions = pd.Series([1]*feature.shape[1])
+weights = linear_weights(features.shape[1])
+scores = scaled_features.mul(weights).sum(axis=1)
+percentage_scores = 100*scores
