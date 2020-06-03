@@ -6,10 +6,23 @@ NITW Project Data Engine Read.Me
 
 ## Project Structure
 
-* frontend/ 
+* flutter_web/ - flutter frontend website 
 * backend/
 * Docker.md - How to use Docker
 * CONTIBUTING.md - How to contribute 
+
+## How to Run Flutter Web
+1. Run in Chrome
+```bash
+cd flutter_web/
+flutter run -d chrome 
+```
+2. Start a webserver
+```bash
+cd flutter_web/
+flutter run -d web-server --web-port=6000 #https://github.com/flutter/flutter/issues/41760
+#Navigate to localhost:6000 in a web browser 
+```
 
 
 1. Summary of the Project
