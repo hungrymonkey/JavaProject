@@ -15,7 +15,7 @@ docker run -v /path/to/JavaProject:/code/ vmware:dev python3 server.py
 
 ## Run docker interactively.
 ```
-docker run -v /path/to/JavaProject:/code/ vmware:dev bash
+docker run -it -v /path/to/JavaProject:/code/ vmware:dev bash
 ```
 
 ## Links
