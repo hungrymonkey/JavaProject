@@ -5,7 +5,7 @@ import numpy as np
 def weightedScore(x):
     wSum  = 0
     score = 0
-    w = len(x) # the first weight is index of the last item
+    w = len(x) # the first weight is index of the last item + 1
     for i in x:
         wSum  += w # add weight to sum
         score += i * w # multiply the value with weight
