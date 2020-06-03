@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'my_appbar.dart';
 import 'loader/asset_loader.dart';
+import 'my_map1.dart';
+import 'my_scatter.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -18,6 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => MyHomePage(title: 'Time Keeper Co'),
+        '/map1': (context) => MyMapPage1(title: 'Map1'),
       },
     );
   }
@@ -61,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         iconTheme: new IconThemeData(color: Colors.black)
       ),
-      drawer: buildDrawer(),
+      drawer: buildDrawer(context),
       body: SingleChildScrollView(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.

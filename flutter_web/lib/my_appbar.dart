@@ -2,14 +2,18 @@
 import 'package:flutter/material.dart';
 import 'loader/asset_loader.dart';
 
-buildDrawer() {
+buildDrawer(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
           ListTile(title: loadHomeBanner()),
           ListTile(
-            title: Text('Home'),
-            onTap: () => {},
+            title: Center( child: Text('Home')),
+            onTap: () => { Navigator.pushReplacementNamed(context, '/')},
+          ),
+          ListTile(
+            title: Center( child: Text('Map1')),
+            onTap: () => { Navigator.pushReplacementNamed(context, '/map1')},
           ),
         ]
       )
