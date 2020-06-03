@@ -1,5 +1,6 @@
 FROM python:3.8-slim-buster
 
+ENV CLASSPATH "/javalib/lib/*:."
 RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN mkdir /usr/share/man/man1/ #https://github.com/geerlingguy/ansible-role-java/issues/64
