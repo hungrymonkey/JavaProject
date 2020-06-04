@@ -56,15 +56,15 @@
           [Service]
           Environment=PATH={{ ansible_env.PATH }}:/opt/flutter/bin/
           Type=simple
-          WorkingDirectory=/code/flutter_web
-          ExecStartPre=/opt/flutter/bin/flutter config --enable-web"
-          ExecStartPre=/opt/flutter/bin/flutter build web
-          ExecStart=/opt/flutter/bin/flutter run --release --web-port=6000
+          WorkingDirectory=/code/flutter_web/build/web
+          #ExecStartPre=/opt/flutter/bin/flutter config --enable-web"
+          #ExecStartPre=/opt/flutter/bin/flutter build web
+          ExecStart=/usr/bin/python3 -m http.server 6000
           ExecStop=-/bin/kill -HUP $MAINPID
           Restart=always
           RestartSec=30
           SyslogIdentifier=flutter-web
-          
+
           [Install]
           WantedBy=multi-user.target
       register: flutter_web_systemd_service_result
