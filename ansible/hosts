@@ -1,0 +1,2 @@
+[frontend]
+tinyturtles.duckdns.org   ansible_user=ubuntu become_user=root ansible_python_interpreter="/usr/bin/python3"
