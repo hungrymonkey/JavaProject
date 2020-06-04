@@ -40,7 +40,7 @@ class _MyMapPageState1 extends State<MyMapPage1> {
 
     return [
       new charts.Series<LinearSales, int>(
-        id: 'Sales',
+        id: 'Location',
         // Providing a color function is optional.
         colorFn: (LinearSales sales, _) {
           // Bucket the measure column value into 3 distinct colors.
@@ -107,14 +107,31 @@ class _MyMapPageState1 extends State<MyMapPage1> {
               Padding(padding: EdgeInsets.all(30), 
                 child: Text(widget.title, style: Theme.of(context).textTheme.headline2),
               ),
+              
               Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
+                  
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 300, maxHeight: 300),
-                    child: SimpleScatterPlotChart(
-                      _createSampleData(),
-                      // Disable animations for image tests.
-                      animate: false,
+                    child: Row(
+                      children: <Widget>[
+                        RotatedBox(quarterTurns: -1, child: Text("Value"),),
+                          Column(
+                            children: [
+                              ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: 280, maxHeight: 280),
+                              child:  SimpleScatterPlotChart(
+                                _createSampleData(),
+                                // Disable animations for image tests.
+                                animate: false,
+                              ),
+                              
+                            ),
+                            Text("Location"),
+                          ]
+                        ),
+                      ]
                     ),
                   ),
                   ConstrainedBox(
