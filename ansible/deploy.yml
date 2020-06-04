@@ -1,0 +1,114 @@
+---
+- hosts: frontend
+  become: true
+  become_user: root
+  pre_tasks:
+    - name: update  apt cache
+      apt: update_cache=true cache_valid_time=600
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+
+    - name: install dependencies
+      apt:
+        name: ['git', 'unzip', 'python3-virtualenv']
+        state: 'present'
+      when: ansible_os_family == 'Debian'
+
+    - name: Clone flutter bin
+      git:
+        repo: 'https://github.com/flutter/flutter.git'
+        dest: "/opt/flutter"
+        version: master
+
+    - name: Clone flutter bin
+      git:
+        repo: 'https://github.com/flutter/flutter.git'
+        dest: "/opt/flutter"
+        version: master
+
+    - name: Clone Java Project
+      git:
+        repo: 'https://github.com/hungrymonkey/JavaProject.git'
+        dest: "/code"
+
+    - name: Enable flutter web
+      shell: "cd /code/flutter_web/; flutter config --enable-web"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/opt/flutter/bin/"
+
+    - name: flutter doctor
+      shell: flutter doctor -v
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/opt/flutter/bin/"
+
+    - name: flutter doctor
+      shell: "cd /code/flutter_web/; flutter pub get"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:/opt/flutter/bin/"
+
+    - name: Ensure flutter-web.service installed
+      copy:
+        dest: "/etc/systemd/system/flutter-web.service"
+        content: |
+          [Unit]
+          Description=Flutter Web
+
+          [Service]
+          Environment=PATH={{ ansible_env.PATH }}:/opt/flutter/bin/
+          Type=simple
+          WorkingDirectory=/code/flutter_web
+          ExecStartPre=/opt/flutter/bin/flutter config --enable-web"
+          ExecStartPre=/opt/flutter/bin/flutter build web
+          ExecStart=/opt/flutter/bin/flutter run --release --web-port=6000
+          ExecStop=-/bin/kill -HUP $MAINPID
+          Restart=always
+          RestartSec=30
+          SyslogIdentifier=flutter-web
+          
+          [Install]
+          WantedBy=multi-user.target
+      register: flutter_web_systemd_service_result
+
+    - name: Ensure systemd reloaded after flutter-web.service installation
+      systemd:
+        name: flutter-web
+        daemon_reload: yes
+        enabled: yes
+      when: "flutter_web_systemd_service_result.changed"
+
+  roles:
+    - ansible-nginx-revproxy
+  vars:
+    nginx_revproxy_sites:
+        default:
+          ssl: false
+          letsencrypt: false
+
+        tinyturtles.duckdns.org:
+          domains:
+            - tinyturtles.duckdns.org
+            - www.tinyturtles.duckdns.org
+          upstreams:
+            - { backend_address: localhost, backend_port: 6000 }
+          listen: 80
+          listen_ssl: 443
+          ssl: true
+          letsencrypt: true
+          letsencrypt_email: tedchang2010@gmail.com
+  post_tasks:
+    - name: Stop Services flutter
+      systemd:
+        name: flutter-web
+        state: stop
+    - name: Stop Nginx
+      systemd:
+        name: nginx
+        state: stop
+    - name: Start Nginx
+      systemd:
+        name: flutter-web
+        state: start
+    - name: Start Services
+      systemd:
+        name: nginx
+        state: start
